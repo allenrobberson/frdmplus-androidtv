@@ -50,10 +50,11 @@ To point the app at a different address, change `START_URL` in `app/build.gradle
 3. **Allow it to install apps:** Settings → Apps → Security & restrictions →
    Unknown sources → turn on **Downloader**.
 4. Open Downloader, type this address and press Go:
-   `https://github.com/allenrobberson/frdmplus-androidtv/releases/latest/download/frdmplus-tv-test.apk`
+   `https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`
 5. Choose **Install**, then **Open**. FRDM+ also appears in your Apps list.
 
-New test builds install right over the old one: repeat step 4.
+Every push to `main` updates that link with the newest build, and it installs right
+over the old one: just repeat step 4.
 
 ### Other ways
 
@@ -64,10 +65,10 @@ New test builds install right over the old one: repeat step 4.
 Test builds are signed with the public `debug.keystore` in this repo, so they can
 always update each other. Play Store builds use your private upload key instead.
 
-### Publishing a new test build
+### Publishing a test build
 
-Push a version tag and GitHub publishes the APK at the link above:
-`git tag v0.1.1 && git push origin v0.1.1`
+Pushing to `main` refreshes the **test-build** release automatically. Pushing a
+version tag (`git tag v0.2.0 && git push origin v0.2.0`) also creates a numbered release.
 
 ## Publish to Google Play
 

@@ -35,13 +35,26 @@ jobs:
             frdmplus-tv-test.apk
             app/build/outputs/bundle/release/*.aab
 
-      # Pushing a tag like v0.1.0 publishes the APK as a downloadable release,
-      # so a TV can install it straight from
-      # https://github.com/<owner>/<repo>/releases/latest/download/frdmplus-tv-test.apk
-      - name: Publish release
+      # Every push to main refreshes the "test-build" pre-release, so a TV can
+      # always install the newest build from one fixed link:
+      # https://github.com/<owner>/<repo>/releases/download/test-build/frdmplus-tv-test.apk
+      - name: Update test-build release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: test-build
+          name: Latest test build
+          files: frdmplus-tv-test.apk
+          prerelease: true
+          make_latest: false
+          body: |
+            Newest test build of FRDM+ for Android TV (from the latest commit on main).
+            Install on a Google TV / Android TV with the Downloader app; see the README.
+
+      # Pushing a version tag like v1.0.0 publishes a numbered release too.
+      - name: Publish version release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           files: frdmplus-tv-test.apk
           prerelease: true
-          body: Test build for sideloading onto Android TV / Google TV. See the README for install steps.
