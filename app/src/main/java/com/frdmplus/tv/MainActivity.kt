@@ -224,7 +224,7 @@ class MainActivity : Activity() {
     }
 
     private fun tap(action: Int) {
-        cursor.pressed = action == MotionEvent.ACTION_DOWN
+        cursor.clicking = action == MotionEvent.ACTION_DOWN
         pokeCursor()
         val now = SystemClock.uptimeMillis()
         if (action == MotionEvent.ACTION_DOWN) {
