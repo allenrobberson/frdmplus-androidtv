@@ -47,32 +47,39 @@ jobs:
             echo "::warning::No upload key secrets set; release bundle will be unsigned."
           fi
 
-      - name: Build test APK and release bundle
+      # The tester APK is the release build, signed with the same private key as the
+      # Play bundle. (Without the secrets, e.g. on forks, it falls back to a debug build.)
+      - name: Build tester APK and Play bundle
         env:
           VERSION_CODE: ${{ github.run_number }}
-          VERSION_NAME: ${{ inputs.release_version || '0.1' }}
+          VERSION_NAME: ${{ inputs.release_version }}
         run: |
-          ./gradlew --no-daemon assembleDebug bundleRelease
-          cp app/build/outputs/apk/debug/app-debug.apk frdmplus-tv-test.apk
+          if [ -f keystore.properties ]; then
+            ./gradlew --no-daemon assembleRelease bundleRelease
+            cp app/build/outputs/apk/release/app-release.apk frdmplus-tv-test.apk
+          else
+            ./gradlew --no-daemon assembleDebug bundleRelease
+            cp app/build/outputs/apk/debug/app-debug.apk frdmplus-tv-test.apk
+          fi
           cp app/build/outputs/bundle/release/app-release.aab frdmplus-tv-release-${{ github.run_number }}.aab
           rm -f upload-key.jks keystore.properties
 
-      # Confirms the Play bundle is signed with the expected upload key.
-      - name: Verify release signature
+      # Confirms the tester APK and the Play bundle are signed with the private key.
+      - name: Verify signatures
         env:
           HAS_KEY: ${{ secrets.UPLOAD_KEYSTORE_BASE64 != '' }}
           EXPECTED: "57:79:73:1F:42:0F:BA:8D:BC:E1:E5:FE:30:B2:41:16:93:A7:D2:C2:13:0D:7F:6D:39:BE:2E:7F:0C:B0:44:52"
         run: |
-          AAB=$(ls frdmplus-tv-release-*.aab)
           if [ "$HAS_KEY" != "true" ]; then echo "No upload key secrets; skipping."; exit 0; fi
-          FP=$(keytool -printcert -jarfile "$AAB" | grep "SHA256:" | head -1 | sed 's/.*SHA256: *//')
-          echo "Bundle signed with SHA-256: $FP"
-          if [ "$FP" = "$EXPECTED" ]; then
-            echo "OK: release bundle is signed with the FRDM+ upload key."
-          else
-            echo "::error::Bundle is not signed with the expected upload key (got '$FP')."
-            exit 1
-          fi
+          for F in frdmplus-tv-release-*.aab frdmplus-tv-test.apk; do
+            FP=$(keytool -printcert -jarfile "$F" | grep "SHA256:" | head -1 | sed 's/.*SHA256: *//')
+            echo "$F signed with SHA-256: $FP"
+            if [ "$FP" != "$EXPECTED" ]; then
+              echo "::error::$F is not signed with the expected private key (got '$FP')."
+              exit 1
+            fi
+          done
+          echo "OK: tester APK and Play bundle are both signed with the FRDM+ private key."
 
       - uses: actions/upload-artifact@v4
         with:
@@ -114,7 +121,11 @@ jobs:
           make_latest: true
           files: frdmplus-tv-test.apk
           body: |
-            First test release of FRDM+ for Android TV / Google TV.
+            Test release of FRDM+ for Android TV / Google TV.
+
+            **Upgrading from v0.1?** This version is signed with the app's permanent private key, so
+            uninstall the old FRDM+ app once first (Settings > Apps > FRDM+ > Uninstall), then install this one.
+            Future versions will install right over it.
 
             **Install on your TV:** open the Downloader app, type code **2273451**, press Go, then Install.
             Full step-by-step guide: https://github.com/allenrobberson/frdmplus-androidtv#install-it-on-your-tv-testers-start-here

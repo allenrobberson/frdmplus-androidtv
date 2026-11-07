@@ -6,7 +6,8 @@ plugins {
 }
 
 // Release signing comes from keystore.properties (git-ignored), so no secrets
-// ever land in the public repo. See README → "Publish to Google Play".
+// ever land in the public repo. The same private key signs the tester APK and
+// the Play upload bundle (see PLAY_STORE_CHECKLIST.md).
 val keystoreProps = Properties().apply {
     val f = rootProject.file("keystore.properties")
     if (f.exists()) f.inputStream().use { load(it) }
@@ -23,7 +24,7 @@ android {
         // CI sets VERSION_CODE to the build number, so every upload to Play is higher
         // than the last (Play rejects a repeated versionCode).
         versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()
-        versionName = System.getenv("VERSION_NAME") ?: "0.1"
+        versionName = System.getenv("VERSION_NAME")?.takeIf { it.isNotBlank() } ?: "0.11"
 
         // The site the app opens. Change it here if the address ever moves.
         buildConfigField("String", "START_URL", "\"https://frdmplus.com/\"")
@@ -44,14 +45,6 @@ android {
     }
 
     signingConfigs {
-        // Shared, public test key (the standard "android" passwords) so every
-        // test build can install over the last one. Not used for Play releases.
-        getByName("debug") {
-            storeFile = rootProject.file("debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-        }
         if (keystoreProps.containsKey("storeFile")) {
             create("release") {
                 storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))

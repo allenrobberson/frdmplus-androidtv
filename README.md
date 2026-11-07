@@ -98,8 +98,12 @@ The dot hides when you're not using it. Press any arrow to bring it back.
 
 ### Getting the newest version
 
-Do **Part 4** again. The same address always has the newest version, and it replaces
+Do **Part 4** again. The same code always has the newest version, and it replaces
 the old one. You stay signed in.
+
+⚠️ **Installed FRDM+ before version 0.11?** Remove the old one first, just once:
+Settings ⚙️ → **Apps** → **FRDM+** → **Uninstall**. Then do Part 4. (Version 0.11 switched
+to the app's permanent signing key, so the old test version can't update to it.)
 
 ### Something went wrong?
 
@@ -108,6 +112,7 @@ the old one. You stay signed in.
 | Pressing OK 7 times did nothing | Make sure **Android TV OS build** is highlighted, then try again. You may have already done it. |
 | Can't find **Unknown sources** | Look in Settings → **Apps** → **Security & restrictions**. On some TVs it's under **Device Preferences** → **Security & restrictions**. |
 | Downloader says **404** or **file not found** | Check you typed **2273451**. If you typed the long address, check for typos, especially big and small letters. |
+| It says **App not installed** | You probably have a version older than 0.11. Uninstall the old FRDM+ (Settings → Apps → FRDM+ → Uninstall), then try again. |
 | The video won't play | Make sure your FRDM+ membership is active, then close the app and open it again. |
 | Still stuck? | [Tell us here](https://github.com/allenrobberson/frdmplus-androidtv/issues/new) and include your TV or streaming device model. |
 
@@ -155,8 +160,9 @@ To point the app at a different address, change `START_URL` in `app/build.gradle
 - **adb:** turn on *Developer options → USB/Wireless debugging* on the TV, then
   `adb connect <tv-ip>` and `adb install frdmplus-tv-test.apk`.
 
-Test builds are signed with the public `debug.keystore` in this repo, so they can
-always update each other. Play Store builds use your private upload key instead.
+Tester APKs built by GitHub Actions are release builds signed with the project's
+private key (kept in Actions secrets), the same key used for the Play bundle.
+Local debug builds use your own Android Studio debug key.
 
 ### Publishing a test build
 
