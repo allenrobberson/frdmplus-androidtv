@@ -23,7 +23,7 @@ android {
         // CI sets VERSION_CODE to the build number, so every upload to Play is higher
         // than the last (Play rejects a repeated versionCode).
         versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()
-        versionName = "1.0"
+        versionName = System.getenv("VERSION_NAME") ?: "0.1"
 
         // The site the app opens. Change it here if the address ever moves.
         buildConfigField("String", "START_URL", "\"https://frdmplus.com/\"")

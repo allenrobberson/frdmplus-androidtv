@@ -6,6 +6,11 @@ on:
     tags: ["v*"]
   pull_request:
   workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Publish a release with this version number (e.g. 0.1). Leave empty to just build."
+        required: false
+        default: ""
 
 permissions:
   contents: write # lets tagged builds publish a GitHub Release
@@ -45,6 +50,7 @@ jobs:
       - name: Build test APK and release bundle
         env:
           VERSION_CODE: ${{ github.run_number }}
+          VERSION_NAME: ${{ inputs.release_version || '0.1' }}
         run: |
           ./gradlew --no-daemon assembleDebug bundleRelease
           cp app/build/outputs/apk/debug/app-debug.apk frdmplus-tv-test.apk
@@ -95,10 +101,27 @@ jobs:
             Newest test build of FRDM+ for Android TV (from the latest commit on main).
             Install on a Google TV / Android TV with the Downloader app; see the README.
 
-      # Pushing a version tag like v1.0.0 publishes a numbered release too.
+      # "Run workflow" with a version number (or pushing a tag like v1.0) publishes a
+      # numbered release with the installable APK attached.
       - name: Publish version release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: inputs.release_version != '' || startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: frdmplus-tv-test.apk
+          tag_name: ${{ inputs.release_version != '' && format('v{0}', inputs.release_version) || github.ref_name }}
+          name: ${{ inputs.release_version != '' && format('FRDM+ for Android TV v{0}', inputs.release_version) || github.ref_name }}
+          target_commitish: ${{ github.sha }}
           prerelease: true
+          make_latest: true
+          files: frdmplus-tv-test.apk
+          body: |
+            First test release of FRDM+ for Android TV / Google TV.
+
+            **Install on your TV:** open the Downloader app, type code **2273451**, press Go, then Install.
+            Full step-by-step guide: https://github.com/allenrobberson/frdmplus-androidtv#install-it-on-your-tv-testers-start-here
+
+            - Sign in with your FRDM+ account and watch live events and replays on your TV
+            - Remote-control pointer: arrows move it, OK clicks, Menu turns it on/off
+            - Full-screen video with play/pause, rewind and fast-forward from the remote
+            - Opens on the sign-in screen; stays signed in afterwards
+
+            Fan-made and free. Found a problem? Open an issue with your TV or device model.
