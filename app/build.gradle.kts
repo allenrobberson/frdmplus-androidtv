@@ -31,7 +31,14 @@ android {
         // only if FRDM+ enrolls in Play's alternative billing / external links
         // programs (or adds Google Play Billing).
         buildConfigField("boolean", "ALLOW_SIGNUP", "false")
-        buildConfigField("String", "SIGNUP_PATHS", "\"/registration\"") // comma-separated
+        buildConfigField(
+            "String", "SIGNUP_PATHS", // comma-separated
+            "\"/registration,/subscribe,/alternativePurchase,/gift/purchase,/external\"",
+        )
+        // Shown first to anyone who isn't signed in yet.
+        buildConfigField("String", "LOGIN_URL", "\"https://frdmplus.com/login\"")
+        // Site endpoint that reports whether this device is signed in.
+        buildConfigField("String", "PROFILE_API", "\"/api/core/user/profile\"")
     }
 
     signingConfigs {

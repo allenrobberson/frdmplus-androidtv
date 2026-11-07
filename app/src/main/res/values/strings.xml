@@ -5,6 +5,6 @@
     <string name="press_back_again">Press Back again to exit</string>
     <string name="cursor_on">Pointer on — press Menu to switch to arrow-key navigation</string>
     <string name="cursor_off">Pointer off — press Menu to bring it back</string>
-    <string name="signup_title">New to FRDM+?</string>
-    <string name="signup_message">Create your account at %1$s on your phone or computer, then come back here and sign in.</string>
+    <string name="signup_title">Sign up on the web</string>
+    <string name="signup_message">To create an account or subscribe, visit %1$s on your phone or computer. Then come back here and sign in.</string>
 </resources>

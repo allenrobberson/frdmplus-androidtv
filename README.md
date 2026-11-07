@@ -14,9 +14,11 @@ Published with permission from FRDM+.
 - **Full-screen video**, with DRM (Widevine) playback allowed for protected streams.
 - **Media keys**: Play/Pause, Fast-forward (+10 s) and Rewind (−10 s) control the video.
 - **Back** goes to the previous page; on the first page, press it twice to exit.
+- **Opens on the sign-in screen** for anyone who isn't signed in; people who are
+  already signed in go straight to the FRDM+ home screen.
 - **Sign in** with an existing FRDM+ account using the TV keyboard (tip: the
   Google TV app on a phone can type for you). "Remember me" is ticked automatically.
-- **Sign-up** is sent to the website: opening the sign-up page shows "Create your
+- **Sign-up and subscribing** are sent to the website: opening those pages shows "Create your
   account at frdmplus.com, then sign in here". This keeps the app within Google Play's
   payments rules; set `ALLOW_SIGNUP = true` in `app/build.gradle.kts` only if FRDM+
   enrolls in Play's alternative billing / external links programs.

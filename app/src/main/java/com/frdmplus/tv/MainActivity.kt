@@ -18,6 +18,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
+import android.webkit.JavascriptInterface
 import android.webkit.PermissionRequest
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebChromeClient
@@ -45,6 +46,11 @@ class MainActivity : Activity() {
     private var cursorMode = true
     private var touchDownTime = 0L
     private var lastBackPress = 0L
+
+    /** Launch gate: keep the page hidden until we know whether to show sign-in or home. */
+    private enum class Gate { CHECKING, GOING_HOME, DONE }
+    private var gate = Gate.DONE
+    private val openGate = Runnable { revealPage() }
 
     private val handler = Handler(Looper.getMainLooper())
     private val hideCursor = Runnable { cursor.visibility = View.INVISIBLE }
@@ -86,9 +92,14 @@ class MainActivity : Activity() {
 
         webView.webViewClient = Client()
         webView.webChromeClient = ChromeClient()
+        webView.addJavascriptInterface(AuthBridge(), "FrdmTv")
 
         if (savedInstanceState == null || webView.restoreState(savedInstanceState) == null) {
-            webView.loadUrl(BuildConfig.START_URL)
+            // Open on the sign-in page, hidden, and switch to home if already signed in.
+            gate = Gate.CHECKING
+            webView.visibility = View.INVISIBLE
+            handler.postDelayed(openGate, 10_000) // never leave the screen blank
+            webView.loadUrl(BuildConfig.LOGIN_URL)
         }
         webView.requestFocus()
         pokeCursor()
@@ -145,6 +156,8 @@ class MainActivity : Activity() {
             }
         }
 
+        if (gate != Gate.DONE && event.keyCode != KeyEvent.KEYCODE_BACK) return true
+
         if (errorView.visibility == View.VISIBLE) {
             if (up && isOk(event.keyCode)) retry()
             return true
@@ -173,13 +186,21 @@ class MainActivity : Activity() {
     private fun onBack() {
         when {
             customView != null -> customViewCallback?.onCustomViewHidden()
-            errorView.visibility != View.VISIBLE && webView.canGoBack() -> webView.goBack()
+            errorView.visibility != View.VISIBLE && canGoBackPastLogin() -> webView.goBack()
             SystemClock.uptimeMillis() - lastBackPress < 2000 -> finish()
             else -> {
                 lastBackPress = SystemClock.uptimeMillis()
                 Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    /** True when there is a previous page that isn't the sign-in screen we already left. */
+    private fun canGoBackPastLogin(): Boolean {
+        if (!webView.canGoBack()) return false
+        val list = webView.copyBackForwardList()
+        val prev = list.getItemAtIndex(list.currentIndex - 1)?.url
+        return !(isLoginUrl(prev) && !isLoginUrl(webView.url))
     }
 
     private fun toggleCursorMode() {
@@ -283,6 +304,46 @@ class MainActivity : Activity() {
         else webView.reload()
     }
 
+    // ---------------------------------------------------------------- launch gate
+
+    private val authCheckJs = """
+        (function(){
+          fetch('${BuildConfig.PROFILE_API}', {credentials: 'include'})
+            .then(function(r){ return r.json(); })
+            .then(function(j){
+              var t = j && j.authentication && j.authentication.type;
+              FrdmTv.authChecked(!!t && t !== 'anonymous');
+            })
+            .catch(function(){ FrdmTv.authChecked(false); });
+        })();
+    """.trimIndent()
+
+    private inner class AuthBridge {
+        @JavascriptInterface
+        fun authChecked(signedIn: Boolean) {
+            runOnUiThread {
+                if (gate != Gate.CHECKING) return@runOnUiThread
+                if (signedIn) {
+                    gate = Gate.GOING_HOME
+                    webView.loadUrl(BuildConfig.START_URL)
+                } else {
+                    revealPage() // not signed in: the sign-in page is the first screen
+                }
+            }
+        }
+    }
+
+    private fun revealPage() {
+        handler.removeCallbacks(openGate)
+        gate = Gate.DONE
+        webView.visibility = View.VISIBLE
+        loading.visibility = View.GONE
+        webView.requestFocus()
+    }
+
+    private fun isLoginUrl(url: String?): Boolean =
+        url != null && Uri.parse(url).path?.trimEnd('/') == Uri.parse(BuildConfig.LOGIN_URL).path?.trimEnd('/')
+
     // ---------------------------------------------------------------- sign-in / sign-up
 
     private val signupPaths = BuildConfig.SIGNUP_PATHS.split(',').map { it.trim() }.filter { it.isNotEmpty() }
@@ -342,9 +403,20 @@ class MainActivity : Activity() {
             loading.visibility = View.VISIBLE
         }
 
+        override fun onPageCommitVisible(view: WebView, url: String?) {
+            if (gate == Gate.DONE) loading.visibility = View.GONE
+        }
+
         override fun onPageFinished(view: WebView, url: String?) {
-            loading.visibility = View.GONE
             view.evaluateJavascript(rememberMeJs, null)
+            when (gate) {
+                Gate.CHECKING -> if (isLoginUrl(url)) view.evaluateJavascript(authCheckJs, null)
+                Gate.GOING_HOME -> {
+                    view.clearHistory() // Back from home shouldn't land on sign-in
+                    revealPage()
+                }
+                Gate.DONE -> loading.visibility = View.GONE
+            }
         }
 
         // The site is a single-page app: most page changes happen without a real
@@ -360,6 +432,7 @@ class MainActivity : Activity() {
             view: WebView, request: WebResourceRequest, error: WebResourceError,
         ) {
             if (request.isForMainFrame) {
+                if (gate != Gate.DONE) revealPage()
                 loading.visibility = View.GONE
                 errorView.visibility = View.VISIBLE
             }
@@ -412,7 +485,7 @@ class MainActivity : Activity() {
         }
 
         override fun onProgressChanged(view: WebView, newProgress: Int) {
-            if (newProgress >= 100) loading.visibility = View.GONE
+            if (newProgress >= 100 && gate == Gate.DONE) loading.visibility = View.GONE
         }
 
         // Without this, video elements show a grey play-button placeholder before loading.
