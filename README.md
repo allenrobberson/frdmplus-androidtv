@@ -17,11 +17,14 @@ Google TV devices (Sony, TCL, Hisense, Nvidia Shield and more). It takes about
    Play Store on your TV.
 3. **Let Downloader install apps:** Settings → Apps → Security & restrictions →
    Unknown sources → turn on **Downloader**.
-4. **Download FRDM+:** open Downloader, type this address, and press Go:
+4. **Download FRDM+:** open Downloader. If it asks for permission to access files,
+   choose **Allow**. On Downloader's **Home** tab, select the box that says
+   **"Enter a URL or Search Term"**, type this address into it, and press **Go**:
 
    `https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`
 
-   Tip: the Google TV app on your phone can type it for you.
+   Tip: type it carefully (it's case-sensitive), or let the Google TV app on your
+   phone type it for you. Downloader then downloads the app file automatically.
 5. Choose **Install**, then **Open**.
 
 **Finding it later:** Google TV doesn't put new apps on the home screen. Go to
