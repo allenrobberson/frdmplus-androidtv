@@ -13,10 +13,12 @@ No computer needed. Do the steps in order. You only have to do Parts 1 to 3 once
 
 ### ✅ Tested and working on
 
-| Device | Model number | App version | Sign-in | Live streams & video |
-| --- | --- | --- | --- | --- |
-| Google TV Streamer (4K) | GRS6B | 0.1 | ✅ | ✅ |
-| Chromecast with Google TV (4K) | GZRNL | 0.11 | ✅ | ✅ |
+| Photo | Device | Model number | App version | Sign-in | Live streams & video |
+| --- | --- | --- | --- | --- | --- |
+| <img src="docs/devices/google-tv-streamer.jpg" width="120" alt="Google TV Streamer"> | Google TV Streamer (4K) | GRS6B | 0.1 | ✅ | ✅ |
+| <img src="docs/devices/chromecast-google-tv-4k.jpg" width="120" alt="Chromecast with Google TV (4K)"> | Chromecast with Google TV (4K) | GZRNL | 0.11 | ✅ | ✅ |
+
+<sub>Device photos by Allen Robberson.</sub>
 
 Not sure which model you have? On the TV, go to Settings ⚙️ → **System** → **About** →
 **Model**, or look for the model number printed on the device.
