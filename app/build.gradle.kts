@@ -20,7 +20,9 @@ android {
         applicationId = "com.frdmplus.tv"
         minSdk = 23
         targetSdk = 35
-        versionCode = 1
+        // CI sets VERSION_CODE to the build number, so every upload to Play is higher
+        // than the last (Play rejects a repeated versionCode).
+        versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()
         versionName = "1.0"
 
         // The site the app opens. Change it here if the address ever moves.

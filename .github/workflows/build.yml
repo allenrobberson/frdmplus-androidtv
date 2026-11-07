@@ -23,17 +23,44 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      # Release signing: uses the upload key stored in the repo's Actions secrets
+      # (UPLOAD_KEYSTORE_BASE64, UPLOAD_STORE_PASSWORD, UPLOAD_KEY_ALIAS, UPLOAD_KEY_PASSWORD).
+      # Without them the bundle is built unsigned, which Play won't accept.
+      - name: Prepare release signing
+        env:
+          KEYSTORE_B64: ${{ secrets.UPLOAD_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > upload-key.jks
+            printf 'storeFile=upload-key.jks\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' \
+              "$STORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > keystore.properties
+            echo "Release bundle will be signed with the upload key."
+          else
+            echo "::warning::No upload key secrets set; release bundle will be unsigned."
+          fi
+
       - name: Build test APK and release bundle
+        env:
+          VERSION_CODE: ${{ github.run_number }}
         run: |
           ./gradlew --no-daemon assembleDebug bundleRelease
           cp app/build/outputs/apk/debug/app-debug.apk frdmplus-tv-test.apk
+          cp app/build/outputs/bundle/release/app-release.aab frdmplus-tv-release-${{ github.run_number }}.aab
+          rm -f upload-key.jks keystore.properties
 
       - uses: actions/upload-artifact@v4
         with:
-          name: frdmplus-tv-builds
-          path: |
-            frdmplus-tv-test.apk
-            app/build/outputs/bundle/release/*.aab
+          name: frdmplus-tv-test-apk
+          path: frdmplus-tv-test.apk
+
+      # The Play Store upload file. Private: download it from the run's page while signed in.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frdmplus-tv-play-bundle
+          path: frdmplus-tv-release-*.aab
 
       # Every push to main refreshes the "test-build" pre-release, so a TV can
       # always install the newest build from one fixed link:
