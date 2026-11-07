@@ -11,6 +11,16 @@ about making it official on the Google Play Store.
 Google TV, or a Sony, TCL, Hisense or Nvidia Shield TV), its remote, and about 10 minutes.
 No computer needed. Do the steps in order. You only have to do Parts 1 to 3 once.
 
+### ✅ Tested and working on
+
+| Device | App version | Sign-in | Live streams & video |
+| --- | --- | --- | --- |
+| Google TV Streamer | 0.1 | ✅ | ✅ |
+| Chromecast with Google TV | 0.11 | ✅ | ✅ |
+
+Tried it on another device? [Let us know](https://github.com/allenrobberson/frdmplus-androidtv/issues/new)
+whether it worked, and we'll add it to the list.
+
 ### Part 1: Unlock your TV (one time only)
 
 1. Press the **Home** button on your remote.
