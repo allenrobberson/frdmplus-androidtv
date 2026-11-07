@@ -1,8 +1,43 @@
 # FRDM+ for Android TV
 
-An open-source Android TV app for **[FRDM+](https://frdmplus.com)**. It opens
-the FRDM+ website full-screen on your TV and makes it work with a TV remote.
-Published with permission from FRDM+.
+A free, open-source Android TV / Google TV app for **[FRDM+](https://frdmplus.com)**.
+Sign in with your FRDM+ account and watch live events and replays on your TV,
+using your TV remote. This is a fan-made app, and the FRDM+ team has been contacted
+about making it official on the Google Play Store.
+
+## Install it on your TV (testers start here)
+
+Works on the Google TV Streamer, Chromecast with Google TV, and other Android TV /
+Google TV devices (Sony, TCL, Hisense, Nvidia Shield and more). It takes about
+5 minutes and no computer is needed.
+
+1. **Turn on developer mode:** on the TV, go to Settings → System → About, highlight
+   **Android TV OS build**, and press OK on the remote 7 times.
+2. **Install Downloader:** get the free **Downloader** app (by AFTVnews) from the
+   Play Store on your TV.
+3. **Let Downloader install apps:** Settings → Apps → Security & restrictions →
+   Unknown sources → turn on **Downloader**.
+4. **Download FRDM+:** open Downloader, type this address, and press Go:
+
+   `https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`
+
+   Tip: the Google TV app on your phone can type it for you.
+5. Choose **Install**, then **Open**.
+
+**Finding it later:** Google TV doesn't put new apps on the home screen. Go to
+**Apps → Your apps → See all**, find **FRDM+**, then long-press it and choose
+**Add to favorites** to keep it handy.
+
+**Using it:** sign in with the same email and password you use on frdmplus.com. The
+arrow keys move the pointer, **OK** clicks, **Back** goes back, and **Menu** switches
+the pointer off and on. Members-only videos need an active FRDM+ membership;
+new accounts are created on frdmplus.com.
+
+**Updating:** repeat step 4. The link always has the newest test build, and it
+installs right over the old one.
+
+**Found a problem or have an idea?** [Open an issue](https://github.com/allenrobberson/frdmplus-androidtv/issues/new)
+and include your TV or streaming device model.
 
 ## Features
 
@@ -26,7 +61,9 @@ Published with permission from FRDM+.
   screen when the internet is down.
 - No analytics, ads or tracking. See [PRIVACY.md](PRIVACY.md).
 
-## Build it
+## For developers
+
+### Build it
 
 You need [Android Studio](https://developer.android.com/studio) (it includes the JDK and Android SDK).
 
@@ -40,23 +77,7 @@ run under **Actions → Build → Artifacts**.
 
 To point the app at a different address, change `START_URL` in `app/build.gradle.kts`.
 
-## Try it on a TV
-
-### Google TV Streamer / Chromecast with Google TV (no computer needed)
-
-1. **Turn on developer mode:** Settings → System → About → highlight **Android TV OS build**
-   and press OK 7 times.
-2. On the TV, install the free **Downloader** app (by AFTVnews) from the Play Store.
-3. **Allow it to install apps:** Settings → Apps → Security & restrictions →
-   Unknown sources → turn on **Downloader**.
-4. Open Downloader, type this address and press Go:
-   `https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`
-5. Choose **Install**, then **Open**. FRDM+ also appears in your Apps list.
-
-Every push to `main` updates that link with the newest build, and it installs right
-over the old one: just repeat step 4.
-
-### Other ways
+### Other ways to run it
 
 - **Emulator:** in Android Studio, add a *Television* device in Device Manager and press Run.
 - **adb:** turn on *Developer options → USB/Wireless debugging* on the TV, then
@@ -70,7 +91,7 @@ always update each other. Play Store builds use your private upload key instead.
 Pushing to `main` refreshes the **test-build** release automatically. Pushing a
 version tag (`git tag v0.2.0 && git push origin v0.2.0`) also creates a numbered release.
 
-## Publish to Google Play
+### Publish to Google Play
 
 Go through **[PLAY_STORE_CHECKLIST.md](PLAY_STORE_CHECKLIST.md)** first. It covers the
 policy items (permission letter, payments, data safety, reviewer login) that decide
@@ -109,7 +130,7 @@ whether review passes.
 
 For each update, raise `versionCode` (and `versionName`) in `app/build.gradle.kts`.
 
-## Project layout
+### Project layout
 
 ```
 app/src/main/java/com/frdmplus/tv/MainActivity.kt  WebView, remote keys, video, DRM
