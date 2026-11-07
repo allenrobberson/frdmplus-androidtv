@@ -163,57 +163,6 @@ always update each other. Play Store builds use your private upload key instead.
 Pushing to `main` refreshes the **test-build** release automatically. Pushing a
 version tag (`git tag v0.2.0 && git push origin v0.2.0`) also creates a numbered release.
 
-### Publish to Google Play
-
-Go through **[PLAY_STORE_CHECKLIST.md](PLAY_STORE_CHECKLIST.md)** first. It covers the
-policy items (permission letter, payments, data safety, reviewer login) that decide
-whether review passes.
-
-
-1. **Developer account.** Sign up at [play.google.com/console](https://play.google.com/console)
-   (one-time fee). New *personal* accounts must run a closed test with at least
-   **12 testers for 14 days in a row** before they can publish to everyone.
-   *Organization* accounts skip that but need a D-U-N-S number.
-2. **Upload key.** Create one in Android Studio (**Build → Generate Signed App Bundle → Create new**),
-   save the `.jks` file in this folder, and create `keystore.properties` next to it:
-   ```properties
-   storeFile=upload-key.jks
-   storePassword=…
-   keyAlias=upload
-   keyPassword=…
-   ```
-   Both files are git-ignored. Back them up somewhere safe and never commit them.
-3. **Build the bundle** (Play requires an `.aab` for TV apps): `./gradlew bundleRelease`
-   → `app/build/outputs/bundle/release/app-release.aab`.
-4. **Create the app** in Play Console and fill in the store listing:
-   - Icon: `store/icon-512.png`. Android TV banner: `store/tv-banner-1280x720.png`.
-   - At least one **Android TV screenshot** (1920×1080, taken on the TV or emulator).
-   - Mention "Android TV" in the description.
-   - Privacy policy URL: link to `PRIVACY.md` on GitHub (or host it on GitHub Pages).
-5. **Policy forms.** In **App content**, complete the data-safety form (the app itself
-   collects nothing; the website's own collection applies) and content rating.
-   If FRDM+ needs a sign-in, add a **test login under *App access*** so reviewers can get in.
-   Keep FRDM+'s written permission handy: Google may ask for proof that you're
-   allowed to show the site and use its name and logo.
-6. **Opt in to TV.** **Setup → Advanced settings → Form factors → Add → Android TV**,
-   then upload the bundle to a testing track, run the test, and promote to production.
-   Google reviews TV apps separately against the
-   [TV app quality guidelines](https://developer.android.com/docs/quality-guidelines/tv-app-quality).
-
-For each update, raise `versionCode` (and `versionName`) in `app/build.gradle.kts`.
-
-### Project layout
-
-```
-app/src/main/java/com/frdmplus/tv/MainActivity.kt  WebView, remote keys, video, DRM
-app/src/main/java/com/frdmplus/tv/CursorView.kt    the on-screen pointer
-app/src/main/res/drawable-xhdpi/banner.png         TV home-screen banner (320×180)
-store/                                             Play Store listing graphics
-```
-
-The banner and icons are simple text placeholders; swap in the official FRDM+ logo
-at the same sizes.
-
 ## License
 
 The code is under the [MIT License](LICENSE). The FRDM+ name, logo and website
