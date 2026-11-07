@@ -13,10 +13,13 @@ No computer needed. Do the steps in order. You only have to do Parts 1 to 3 once
 
 ### ✅ Tested and working on
 
-| Device | App version | Sign-in | Live streams & video |
-| --- | --- | --- | --- |
-| Google TV Streamer | 0.1 | ✅ | ✅ |
-| Chromecast with Google TV | 0.11 | ✅ | ✅ |
+| Device | Model number | App version | Sign-in | Live streams & video |
+| --- | --- | --- | --- | --- |
+| Google TV Streamer (4K) | GRS6B | 0.1 | ✅ | ✅ |
+| Chromecast with Google TV (4K) | GZRNL | 0.11 | ✅ | ✅ |
+
+Not sure which model you have? On the TV, go to Settings ⚙️ → **System** → **About** →
+**Model**, or look for the model number printed on the device.
 
 Tried it on another device? [Let us know](https://github.com/allenrobberson/frdmplus-androidtv/issues/new)
 whether it worked, and we'll add it to the list.
