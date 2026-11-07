@@ -13,7 +13,7 @@ Published with permission from FRDM+.
   passes the arrow keys straight to the website.
 - **Full-screen video**, with DRM (Widevine) playback allowed for protected streams.
 - **Media keys**: Play/Pause, Fast-forward (+10 s) and Rewind (−10 s) control the video.
-- **Back** goes to the previous page; on the first page, press it twice to exit.
+- **Back** goes to the previous page, and from the first screen returns to the TV home screen.
 - **Opens on the sign-in screen** for anyone who isn't signed in; people who are
   already signed in go straight to the FRDM+ home screen.
 - **Sign in** with an existing FRDM+ account using the TV keyboard (tip: the
@@ -70,6 +70,11 @@ Push a version tag and GitHub publishes the APK at the link above:
 `git tag v0.1.1 && git push origin v0.1.1`
 
 ## Publish to Google Play
+
+Go through **[PLAY_STORE_CHECKLIST.md](PLAY_STORE_CHECKLIST.md)** first. It covers the
+policy items (permission letter, payments, data safety, reviewer login) that decide
+whether review passes.
+
 
 1. **Developer account.** Sign up at [play.google.com/console](https://play.google.com/console)
    (one-time fee). New *personal* accounts must run a closed test with at least

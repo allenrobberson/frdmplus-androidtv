@@ -45,7 +45,6 @@ class MainActivity : Activity() {
     /** Pointer mode (arrow keys move an on-screen pointer) vs. plain arrow-key mode. */
     private var cursorMode = true
     private var touchDownTime = 0L
-    private var lastBackPress = 0L
 
     /** Launch gate: keep the page hidden until we know whether to show sign-in or home. */
     private enum class Gate { CHECKING, GOING_HOME, DONE }
@@ -187,11 +186,8 @@ class MainActivity : Activity() {
         when {
             customView != null -> customViewCallback?.onCustomViewHidden()
             errorView.visibility != View.VISIBLE && canGoBackPastLogin() -> webView.goBack()
-            SystemClock.uptimeMillis() - lastBackPress < 2000 -> finish()
-            else -> {
-                lastBackPress = SystemClock.uptimeMillis()
-                Toast.makeText(this, R.string.press_back_again, Toast.LENGTH_SHORT).show()
-            }
+            // Android TV guidelines: Back on the app's first screen returns to the TV home screen.
+            else -> finish()
         }
     }
 
