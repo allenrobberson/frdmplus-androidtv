@@ -14,6 +14,12 @@ Published with permission from FRDM+.
 - **Full-screen video**, with DRM (Widevine) playback allowed for protected streams.
 - **Media keys**: Play/Pause, Fast-forward (+10 s) and Rewind (−10 s) control the video.
 - **Back** goes to the previous page; on the first page, press it twice to exit.
+- **Sign in** with an existing FRDM+ account using the TV keyboard (tip: the
+  Google TV app on a phone can type for you). "Remember me" is ticked automatically.
+- **Sign-up** is sent to the website: opening the sign-up page shows "Create your
+  account at frdmplus.com, then sign in here". This keeps the app within Google Play's
+  payments rules; set `ALLOW_SIGNUP = true` in `app/build.gradle.kts` only if FRDM+
+  enrolls in Play's alternative billing / external links programs.
 - Stays signed in between launches, keeps the screen awake, and shows a retry
   screen when the internet is down.
 - No analytics, ads or tracking. See [PRIVACY.md](PRIVACY.md).
@@ -34,9 +40,32 @@ To point the app at a different address, change `START_URL` in `app/build.gradle
 
 ## Try it on a TV
 
+### Google TV Streamer / Chromecast with Google TV (no computer needed)
+
+1. **Turn on developer mode:** Settings → System → About → highlight **Android TV OS build**
+   and press OK 7 times.
+2. On the TV, install the free **Downloader** app (by AFTVnews) from the Play Store.
+3. **Allow it to install apps:** Settings → Apps → Security & restrictions →
+   Unknown sources → turn on **Downloader**.
+4. Open Downloader, type this address and press Go:
+   `https://github.com/allenrobberson/frdmplus-androidtv/releases/latest/download/frdmplus-tv-test.apk`
+5. Choose **Install**, then **Open**. FRDM+ also appears in your Apps list.
+
+New test builds install right over the old one: repeat step 4.
+
+### Other ways
+
 - **Emulator:** in Android Studio, add a *Television* device in Device Manager and press Run.
-- **A real TV:** turn on *Developer options → USB/Network debugging* on the TV, then
-  `adb connect <tv-ip>` and `adb install app-debug.apk`.
+- **adb:** turn on *Developer options → USB/Wireless debugging* on the TV, then
+  `adb connect <tv-ip>` and `adb install frdmplus-tv-test.apk`.
+
+Test builds are signed with the public `debug.keystore` in this repo, so they can
+always update each other. Play Store builds use your private upload key instead.
+
+### Publishing a new test build
+
+Push a version tag and GitHub publishes the APK at the link above:
+`git tag v0.1.1 && git push origin v0.1.1`
 
 ## Publish to Google Play
 

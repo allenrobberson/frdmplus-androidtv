@@ -25,9 +25,24 @@ android {
 
         // The site the app opens. Change it here if the address ever moves.
         buildConfigField("String", "START_URL", "\"https://frdmplus.com/\"")
+        // Sign-up / subscription pages. While ALLOW_SIGNUP is false the app lets
+        // people sign in but sends new subscribers to the website, which keeps
+        // the Play listing clear of Google Play's payments rules. Set it to true
+        // only if FRDM+ enrolls in Play's alternative billing / external links
+        // programs (or adds Google Play Billing).
+        buildConfigField("boolean", "ALLOW_SIGNUP", "false")
+        buildConfigField("String", "SIGNUP_PATHS", "\"/registration\"") // comma-separated
     }
 
     signingConfigs {
+        // Shared, public test key (the standard "android" passwords) so every
+        // test build can install over the last one. Not used for Play releases.
+        getByName("debug") {
+            storeFile = rootProject.file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
         if (keystoreProps.containsKey("storeFile")) {
             create("release") {
                 storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))

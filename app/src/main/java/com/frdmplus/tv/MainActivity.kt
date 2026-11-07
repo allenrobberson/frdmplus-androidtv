@@ -2,10 +2,12 @@ package com.frdmplus.tv
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -281,9 +283,51 @@ class MainActivity : Activity() {
         else webView.reload()
     }
 
+    // ---------------------------------------------------------------- sign-in / sign-up
+
+    private val signupPaths = BuildConfig.SIGNUP_PATHS.split(',').map { it.trim() }.filter { it.isNotEmpty() }
+    private var signupDialog: AlertDialog? = null
+
+    private fun isSignupPage(uri: Uri?): Boolean {
+        if (BuildConfig.ALLOW_SIGNUP || uri == null) return false
+        val path = uri.path ?: return false
+        return signupPaths.any { path == it || path.startsWith("$it/") }
+    }
+
+    private fun showSignupNotice() {
+        if (signupDialog?.isShowing == true) return
+        val site = Uri.parse(BuildConfig.START_URL).host?.removePrefix("www.") ?: BuildConfig.START_URL
+        signupDialog = AlertDialog.Builder(this)
+            .setTitle(R.string.signup_title)
+            .setMessage(getString(R.string.signup_message, site))
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+    }
+
+    /**
+     * TV sign-in convenience: tick the site's "Remember me" box when the sign-in
+     * form appears, so people don't have to type their password on a TV again.
+     */
+    private val rememberMeJs = """
+        (function(){
+          if (window.__tvRemember) return; window.__tvRemember = true;
+          function tick(){
+            document.querySelectorAll('input[type=checkbox][name=rememberMe]').forEach(function(b){
+              if (!b.dataset.tvDone) { b.dataset.tvDone = '1'; if (!b.checked) b.click(); }
+            });
+          }
+          new MutationObserver(tick).observe(document.documentElement, {childList:true, subtree:true});
+          tick();
+        })();
+    """.trimIndent()
+
     private inner class Client : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
             val uri = request.url
+            if (request.isForMainFrame && isSignupPage(uri)) {
+                showSignupNotice()
+                return true
+            }
             if (uri.scheme == "http" || uri.scheme == "https") return false
             // intent:, market:, mailto: etc. — hand to another app if one exists.
             try {
@@ -300,6 +344,16 @@ class MainActivity : Activity() {
 
         override fun onPageFinished(view: WebView, url: String?) {
             loading.visibility = View.GONE
+            view.evaluateJavascript(rememberMeJs, null)
+        }
+
+        // The site is a single-page app: most page changes happen without a real
+        // page load, and only show up here.
+        override fun doUpdateVisitedHistory(view: WebView, url: String?, isReload: Boolean) {
+            if (isSignupPage(url?.let(Uri::parse))) {
+                if (view.canGoBack()) view.goBack() else view.loadUrl(BuildConfig.START_URL)
+                showSignupNotice()
+            }
         }
 
         override fun onReceivedError(
