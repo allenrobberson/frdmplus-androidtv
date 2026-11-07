@@ -33,6 +33,9 @@ enrollment in Play's alternative-billing / external-content-links programs.
       in the **store listing**.
 - [ ] Only switch `ALLOW_SIGNUP` to `true` after FRDM+ enrolls in the
       relevant Play program.
+- [ ] The site's home-page banner image shows "$19.99 a month or $199 a year". Inside
+      a Play app that can read as steering users to pay outside Google Play. Ask FRDM+
+      to hide pricing for the TV app (or accept the risk / enroll in Play's programs).
 
 ## 3. Privacy policy and Data safety ⚠️
 
@@ -96,6 +99,9 @@ view as data the app collects.
 Check each of these on the Google TV Streamer before submitting. Google's TV
 reviewers check the same things:
 
+- [x] Verified on the website (Nov 7, 2026): after sign-in the site goes to the home page,
+      the profile API reports the account as signed in, and subscriber video plays
+      (720p adaptive streaming, no DRM). Layout is readable at TV size (960×540).
 - [ ] Sign-in screen appears on first launch; signing in works with the TV keyboard
 - [ ] After signing in, relaunching goes straight to the home screen
 - [ ] Live and on-demand videos play, including full-screen, with sound

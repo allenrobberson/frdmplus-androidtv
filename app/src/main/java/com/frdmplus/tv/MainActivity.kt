@@ -304,13 +304,20 @@ class MainActivity : Activity() {
 
     private val authCheckJs = """
         (function(){
+          // The site's own "remembered sign-in" flag. Its short-lived session cookie
+          // may have lapsed since the last launch; the site renews it on its own.
+          var remembered = false;
+          try {
+            var a = JSON.parse(localStorage.getItem('authentication') || 'null');
+            remembered = !!(a && a.isLoggedIn === true);
+          } catch (e) {}
           fetch('${BuildConfig.PROFILE_API}', {credentials: 'include'})
             .then(function(r){ return r.json(); })
             .then(function(j){
               var t = j && j.authentication && j.authentication.type;
-              FrdmTv.authChecked(!!t && t !== 'anonymous');
+              FrdmTv.authChecked(remembered || (!!t && t !== 'anonymous'));
             })
-            .catch(function(){ FrdmTv.authChecked(false); });
+            .catch(function(){ FrdmTv.authChecked(remembered); });
         })();
     """.trimIndent()
 
