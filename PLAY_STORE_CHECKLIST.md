@@ -89,9 +89,11 @@ view as data the app collects.
 - [ ] Replace placeholder banner and icons with the official FRDM+ logo
       (`app/src/main/res/drawable-xhdpi/banner.png`, `mipmap-*/ic_launcher.png`,
       `store/`)
-- [ ] Store listing: at least one **Android TV screenshot** (1920×1080), the TV
-      banner (`store/tv-banner-1280x720.png`), icon (`store/icon-512.png`), and
-      the words "Android TV" in the description
+- [x] Store graphics in `store/`: TV screenshots (`screenshots/tv-1-home.png`,
+      `tv-2-channel.png`, `tv-3-video.png`, 1920×1080), feature graphic
+      (`feature-graphic-1024x500.png`), TV banner (`tv-banner-1280x720.png`), icon (`icon-512.png`)
+- [ ] `tv-1-home.png` shows the site's "$19.99 a month…" price strip; leave it out of the
+      listing (or replace it) unless FRDM+ is enrolled in Play's external-payment programs
 - [ ] **Setup → Advanced settings → Form factors → Android TV**: opt in
 
 ## 7. Test on a real TV first
