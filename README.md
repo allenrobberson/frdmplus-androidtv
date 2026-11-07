@@ -45,13 +45,13 @@ No computer needed. Do the steps in order. You only have to do Parts 1 to 3 once
 2. The first time, it asks to use your files. Pick **Allow**. If you see a welcome
    message, pick **OK**.
 3. On the left side, make sure **Home** is picked.
-4. Pick the white box that says **"Enter a URL or Search Term"**. A keyboard pops up.
-5. Type this exactly (big and small letters matter):
+4. Pick the white box that says **"Enter a URL or Search Term"**. A number pad and keyboard pop up.
+5. Type this number:
 
-   **`https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`**
+   ## **2273451**
 
-   💡 Easier way: open the **Google TV app** on your phone, tap the **remote**, then the
-   **keyboard** button, and type or paste it from your phone.
+   <sub>Code not working? Type this whole address instead (big and small letters matter):<br>
+   `https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`</sub>
 6. Pick **Go**. Downloader downloads FRDM+ (it only takes a few seconds).
 7. A screen asks **"Do you want to install this app?"** Pick **Install**.
    - If a box says your TV **isn't allowed to install unknown apps**, pick **Settings**,
@@ -107,7 +107,7 @@ the old one. You stay signed in.
 | --- | --- |
 | Pressing OK 7 times did nothing | Make sure **Android TV OS build** is highlighted, then try again. You may have already done it. |
 | Can't find **Unknown sources** | Look in Settings → **Apps** → **Security & restrictions**. On some TVs it's under **Device Preferences** → **Security & restrictions**. |
-| Downloader says **404** or **file not found** | Check the address for typos, especially big and small letters. |
+| Downloader says **404** or **file not found** | Check you typed **2273451**. If you typed the long address, check for typos, especially big and small letters. |
 | The video won't play | Make sure your FRDM+ membership is active, then close the app and open it again. |
 | Still stuck? | [Tell us here](https://github.com/allenrobberson/frdmplus-androidtv/issues/new) and include your TV or streaming device model. |
 
