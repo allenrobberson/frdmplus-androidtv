@@ -7,40 +7,109 @@ about making it official on the Google Play Store.
 
 ## Install it on your TV (testers start here)
 
-Works on the Google TV Streamer, Chromecast with Google TV, and other Android TV /
-Google TV devices (Sony, TCL, Hisense, Nvidia Shield and more). It takes about
-5 minutes and no computer is needed.
+**What you need:** a Google TV or Android TV (like a Google TV Streamer, Chromecast with
+Google TV, or a Sony, TCL, Hisense or Nvidia Shield TV), its remote, and about 10 minutes.
+No computer needed. Do the steps in order. You only have to do Parts 1 to 3 once.
 
-1. **Turn on developer mode:** on the TV, go to Settings → System → About, highlight
-   **Android TV OS build**, and press OK on the remote 7 times.
-2. **Install Downloader:** get the free **Downloader** app (by AFTVnews) from the
-   Play Store on your TV.
-3. **Let Downloader install apps:** Settings → Apps → Security & restrictions →
-   Unknown sources → turn on **Downloader**.
-4. **Download FRDM+:** open Downloader. If it asks for permission to access files,
-   choose **Allow**. On Downloader's **Home** tab, select the box that says
-   **"Enter a URL or Search Term"**, type this address into it, and press **Go**:
+### Part 1: Unlock your TV (one time only)
 
-   `https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`
+1. Press the **Home** button on your remote.
+2. Go to the top right corner of the screen and pick the **gear** ⚙️ (Settings).
+   - Don't see a gear? Pick your **profile picture** at the top right first, then **Settings**.
+3. Pick **System**.
+4. Pick **About**.
+5. Scroll down until **Android TV OS build** is highlighted.
+6. Press the middle **OK** button on your remote **7 times** in a row.
+7. You'll see a message that says **"You are now a developer!"** 🎉 (If it asks for your PIN, type it in.)
+8. Press the **Home** button to go back.
 
-   Tip: type it carefully (it's case-sensitive), or let the Google TV app on your
-   phone type it for you. Downloader then downloads the app file automatically.
-5. Choose **Install**, then **Open**.
+### Part 2: Get the Downloader app (one time only)
 
-**Finding it later:** Google TV doesn't put new apps on the home screen. Go to
-**Apps → Your apps → See all**, find **FRDM+**, then long-press it and choose
-**Add to favorites** to keep it handy.
+1. On the home screen, go to **Apps**, or use **Search** 🔍.
+2. Type **Downloader** and pick the orange app called **Downloader by AFTVnews**.
+3. Pick **Install**. Wait until it says **Open**.
+4. Press the **Home** button.
 
-**Using it:** sign in with the same email and password you use on frdmplus.com. The
-arrow keys move the pointer, **OK** clicks, **Back** goes back, and **Menu** switches
-the pointer off and on. Members-only videos need an active FRDM+ membership;
-new accounts are created on frdmplus.com.
+### Part 3: Let Downloader install apps (one time only)
 
-**Updating:** repeat step 4. The link always has the newest test build, and it
-installs right over the old one.
+1. Go to the **gear** ⚙️ (Settings) again, like in Part 1.
+2. Pick **Apps**.
+3. Pick **Security & restrictions**.
+4. Pick **Unknown sources**.
+5. Find **Downloader** and turn its switch **on** (it turns blue).
+6. Press the **Home** button.
 
-**Found a problem or have an idea?** [Open an issue](https://github.com/allenrobberson/frdmplus-androidtv/issues/new)
-and include your TV or streaming device model.
+### Part 4: Get the FRDM+ app
+
+1. Open **Downloader**.
+2. The first time, it asks to use your files. Pick **Allow**. If you see a welcome
+   message, pick **OK**.
+3. On the left side, make sure **Home** is picked.
+4. Pick the white box that says **"Enter a URL or Search Term"**. A keyboard pops up.
+5. Type this exactly (big and small letters matter):
+
+   **`https://github.com/allenrobberson/frdmplus-androidtv/releases/download/test-build/frdmplus-tv-test.apk`**
+
+   💡 Easier way: open the **Google TV app** on your phone, tap the **remote**, then the
+   **keyboard** button, and type or paste it from your phone.
+6. Pick **Go**. Downloader downloads FRDM+ (it only takes a few seconds).
+7. A screen asks **"Do you want to install this app?"** Pick **Install**.
+   - If a box says your TV **isn't allowed to install unknown apps**, pick **Settings**,
+     turn **Downloader** on, then press **Back** and pick **Install** again.
+   - If **Google Play Protect** shows a warning, pick **More details**, then **Install anyway**.
+     (This happens because the app isn't on the Play Store yet.)
+8. When it says **App installed**, pick **Open**. 🎉
+9. Downloader may ask to **delete** the download file. Pick **Delete**. It's not needed anymore,
+   and the app stays installed.
+
+### Part 5: Sign in and watch
+
+1. FRDM+ opens on the **Sign in** screen.
+2. Use the arrows to move the **white dot** (the pointer) to the **Email** box and press **OK**.
+   Type your FRDM+ email.
+3. Do the same for **Password**, then move the dot to **Sign in** and press **OK**.
+4. That's it. Pick a video and enjoy! 🏁 Next time you open the app, you're already signed in.
+
+Don't have a FRDM+ account yet? Make one at **frdmplus.com** on your phone or computer
+first, then sign in on the TV.
+
+### How to find the app later
+
+New apps don't show up on the home screen by themselves. To find FRDM+:
+
+1. On the home screen, go to **Apps**.
+2. Find **Your apps** and pick **See all**.
+3. Pick **FRDM+**.
+
+⭐ To keep it on your home screen: highlight **FRDM+**, **hold down OK** until a menu pops up,
+and pick **Add to favorites**.
+
+### Remote buttons
+
+| Button | What it does |
+| --- | --- |
+| Arrows | Move the white dot |
+| OK (middle) | Click what the dot is on |
+| Back | Go back a page (on the first page, it closes the app) |
+| Play/Pause | Play or pause the video |
+| Menu (☰), if your remote has one | Turn the dot off and on |
+
+The dot hides when you're not using it. Press any arrow to bring it back.
+
+### Getting the newest version
+
+Do **Part 4** again. The same address always has the newest version, and it replaces
+the old one. You stay signed in.
+
+### Something went wrong?
+
+| Problem | What to do |
+| --- | --- |
+| Pressing OK 7 times did nothing | Make sure **Android TV OS build** is highlighted, then try again. You may have already done it. |
+| Can't find **Unknown sources** | Look in Settings → **Apps** → **Security & restrictions**. On some TVs it's under **Device Preferences** → **Security & restrictions**. |
+| Downloader says **404** or **file not found** | Check the address for typos, especially big and small letters. |
+| The video won't play | Make sure your FRDM+ membership is active, then close the app and open it again. |
+| Still stuck? | [Tell us here](https://github.com/allenrobberson/frdmplus-androidtv/issues/new) and include your TV or streaming device model. |
 
 ## Features
 
