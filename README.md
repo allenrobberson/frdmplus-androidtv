@@ -184,6 +184,12 @@ Local debug builds use your own Android Studio debug key.
 Pushing to `main` refreshes the **test-build** release automatically. Pushing a
 version tag (`git tag v0.2.0 && git push origin v0.2.0`) also creates a numbered release.
 
+## Support this project
+
+This app is free, fan-made and built in my spare time. If it's useful to you, please consider
+**[sponsoring it on GitHub](https://github.com/sponsors/allenrobberson)**. Sponsorships go to the
+developer of this app, not to FRDM+.
+
 ## License
 
 The code is under the [MIT License](LICENSE). The FRDM+ name, logo and website
