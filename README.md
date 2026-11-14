@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="https://github.com/sponsors/allenrobberson"><img src="https://img.shields.io/badge/Sponsor-Support%20this%20app-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="Sponsor this app on GitHub"></a>
+</p>
+<p align="center">
+  <b>💖 This app is free, open source and built in my spare time. If you enjoy watching FRDM+ on your TV, please <a href="https://github.com/sponsors/allenrobberson">become a sponsor</a>.</b><br>
+  Sponsorships go to the developer of this fan-made app, not to FRDM+.
+</p>
+
 # FRDM+ for Android TV
 
 A free, open-source Android TV / Google TV app for **[FRDM+](https://frdmplus.com)**.
